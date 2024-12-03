@@ -8,7 +8,7 @@ mycur = mydb.cursor()
 # mycur.execute('create database air_reservation')
 # mycur.execute(' create table psngr_list(id INT PRIMARY KEY,name VARCHAR(50),class VARCHAR(20), flightDate DATE, Fly_from VARCHAR(20), Fly_to VARCHAR(20))')
 
-def psngr_entry():
+def psngr_entry(): 
 
     entry_window = Toplevel()
     entry_window.title('Passenger Entry')
