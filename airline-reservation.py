@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import messagebox
 import mysql.connector as sqlcon
 import random as rdm
 
@@ -10,72 +11,66 @@ mycur = mydb.cursor()
 
 def psngr_entry(): 
 
-    entry_window = Toplevel()
-    entry_window.title('Passenger Entry')
-    entry_window.geometry('420x340')
-
-    id_label = Label(entry_window,text='Passenger id')
-    pid = Entry(entry_window)
-    # name_label = Label(entry_window,text='Name')
-    # pname = Entry(entry_window)
-    
-
-    id_label.grid(row=0,column=0)
-    pid.grid(row=0,column=1)
-    # name_label.grid(row=1,column=0)
-    # pname.grid(row=1,column=1)
-
-    id_ = int(input("Enter Aadhar Number: "))
-    name = input("Enter Full Name: ")
-    class_ = input('Ticket (Economy/Business/Luxury) : ')
-    f_date = input("Enter flight date:")
-    from_ = input("Fly from: ")
-    to_ = input("Fly to: ")
-    details = (id_,name,class_,f_date,from_,to_)
-
     def submit():
+
+        id_ = pid.get()
+        name = pname.get()
+        class_ = pClass.get()
+        f_date = pDate.get()
+        from_ = pfrom.get()
+        to_ = pto.get()
+        details = (id_,name,class_,f_date,from_,to_)
+
+
         query = 'insert into psngr_list(id,name,class,flightDate,Fly_from,Fly_to) values(%s,%s,%s,%s,%s,%s)'
         mycur.execute(query,details)
         mydb.commit()
 
+        messagebox.showinfo('Submitted','Passenger details are saved')
+    def destroy():
+        entry_window.destroy()
+
+    entry_window = Toplevel()
+    entry_window.title('Passenger Entry')
+    entry_window.geometry('420x340')
+
+    id_label = Label(entry_window,text='Passenger ID')
+    pid = Entry(entry_window)
+    name_label = Label(entry_window,text='Name')
+    pname = Entry(entry_window)
+    class_label = Label(entry_window,text='Class')
+    pClass = Entry(entry_window)
+    date_label = Label(entry_window,text='Flight date')
+    pDate = Entry(entry_window)
+    flyFrom_label = Label(entry_window,text='Fly from')
+    pfrom = Entry(entry_window)
+    flyto_label = Label(entry_window,text='Fly to')
+    pto = Entry(entry_window)
+    sbmtBtn = Button(entry_window,text='Submit',command=submit)
+    mainMenuBtn = Button(entry_window,text='Main Menu',command=main)
+    cancelBtn = Button(entry_window,text='Cancel',command=destroy)
+    
+
+    id_label.grid(row=1,column=1)
+    pid.grid(row=1,column=2)
+    name_label.grid(row=2,column=1)
+    pname.grid(row=2,column=2)
+    class_label.grid(row=3, column=1)
+    pClass.grid(row=3,column=2)
+    date_label.grid(row=4,column=1)
+    pDate.grid(row=4,column=2)
+    flyFrom_label.grid(row=5,column=1)
+    pfrom.grid(row=5,column=2)
+    flyto_label.grid(row=6,column=1)
+    pto.grid(row=6,column=2)
+    sbmtBtn.grid(row=8,column=1)
+    mainMenuBtn.grid(row=8,column=2)
+    cancelBtn.grid(row=8,column=3)
+
+
+    
     entry_window.mainloop()
-def dispall():
-    
-    query = "Select * from psngr_list"
-    mycursor.execute(query)   
-    data = mycursor.fetchall()
-    print("The passenger details are as follows : ")
-    for x in data:
-        print(x)
-def update_info():
-    psngr_id = int(input('Enter passenger ticket no. : '))
-    change = input("Update -- Name(n) - Class(c) - Flight date(d) - boarding(b) - Landing(l) : ")
-    if change == "n" :
-        new_name = input("Enter new name: ")
-        data = (new_name, psngr_id)
-        query = 'update psngr_list set name = %s where id=%s'
-    elif change == "c":
-        new_class = input("Enter new class: ")
-        data = (new_class,psngr_id)
-        query = 'replace class where id=%s as %s'
-    elif change == "d":
-        new_fdate = input("Enter new date")
-        data = (new_fdate, psngr_id)
-        query = 'replace flightDate where id=%s as %s'
-    elif change == "b":
-        new_boarding = input("Enter new boarding location: ")
-        data = (new_boarding, psngr_id)
-        query = 'replace name where id=%s as %s'
-    elif change == "l":
-        new_landing = input("Enter new landing location: ")
-        data = (new_landing, psngr_id)
-        query = 'replace name where id=%s as %s'
-    else:
-        print("Invalid Input")
-    
-    mycur.execute(query,data)
-    mydb.commit()
-def dis_psngr():
+
     dis_id = int(input("Enter id of passenger: "))
     query = "Select * from psngr_list where id = %s"
     mycursor.execute(query,dis_id)   
@@ -84,13 +79,16 @@ def dis_psngr():
     for x in data:
         print(x)
 
-window = Tk()
+def main():
+    window = Tk()
 
-window.title('Indian Airlines')
-window.geometry('420x340')
+    window.title('Indian Airlines')
+    window.geometry('420x340')
 
-Entry = Button(window,text='Add Passenger Data',command=psngr_entry)
+    entryBtn = Button(window,text='Add Passenger Data',command=psngr_entry)
 
-Entry.grid(row=1,columnspan=1)
+    entryBtn.grid(row=1,columnspan=1)
 
-window.mainloop()
+    window.mainloop()
+
+main()
