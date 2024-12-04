@@ -105,32 +105,59 @@ def update_info():
 def display():
 
     def dis_psngr():
-        dis_id = int(input("Enter id of passenger: "))
-        query = "Select * from psngr_list where id = %s"
-        mycur.execute(query,dis_id)   
-        data = mycur.fetchall()
-        print("The passenger details are as follows : ")
-        for x in data:
-            data_label = Label(display_window,text=x)
-        data_label.grid(row=5,column=5)
+
+        def idSubmit():
+            dis_id = (idEntry.get(),)
+            query = "Select * from psngr_list where id = %s"
+            mycur.execute(query,dis_id)   
+            data = mycur.fetchall()
+            v = []
+            n = 0
+            y = 0.3
+            details_arr = ['ID : ','Name : ','Class : ','Date : ','Fly from : ','Fly to : ']
+            for x in data:
+                v.append(x)
+            for i in v:
+                for j in i:
+                    Label1 = Label(display_window,text=(('{} {}').format(details_arr[n],j)),font=('Ariel',16),width=50)
+                    Label1.place(relx=0.12,rely=y)
+                    y += 0.07
+                    n += 1
+            
+
+        ask_id = Label(display_window,text='Enter ID of passenger : ')
+        idEntry = Entry(display_window)
+        chkIdBtn = Button(display_window,text='Continue',command=idSubmit)
+
+
+        ask_id.grid(row=3,column=1)
+        idEntry.grid(row=3,column=2)
+        chkIdBtn.grid(row=4,column=1)
+
 
     def dispall():
+
         query = "Select * from psngr_list"
         mycur.execute(query)   
         data = mycur.fetchall()
         v = []
-        n = 4
+        n = 0
+        y = 0.3
         for x in data:
             v.append(x)
         for i in v:
-            data_label = Label(display_window,text=i)
-            data_label.grid(row=n,column=1,columnspan=2)
-            n += 1
+                Label1 = Label(display_window,text=(('{} - {}').format(n+1,i)),font=('Ariel',12))
+                Label1.place(relx=0.17,rely=y)
+                y += 0.07
+                n += 1
+               
+
+        
 
     display_window = Toplevel()
 
     display_window.title('Check details')
-    display_window.geometry('400x400')
+    display_window.geometry('800x400')
 
     chkAllBtn = Button(display_window,text='All Passengers details',command=dispall)
     chkBtn = Button(display_window,text='Check Passenger details',command=dis_psngr)
