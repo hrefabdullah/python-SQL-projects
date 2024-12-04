@@ -9,7 +9,8 @@ mycur = mydb.cursor()
 # mycur.execute('create database air_reservation')
 # mycur.execute(' create table psngr_list(id INT PRIMARY KEY,name VARCHAR(50),class VARCHAR(20), flightDate DATE, Fly_from VARCHAR(20), Fly_to VARCHAR(20))')
 
-def psngr_entry(): 
+def psngr_entry():
+
 
     def submit():
 
@@ -71,23 +72,89 @@ def psngr_entry():
     
     entry_window.mainloop()
 
-    dis_id = int(input("Enter id of passenger: "))
-    query = "Select * from psngr_list where id = %s"
-    mycursor.execute(query,dis_id)   
-    data = mycursor.fetchall()
-    print("The passenger details are as follows : ")
-    for x in data:
-        print(x)
+
+def update_info():
+    psngr_id = int(input('Enter passenger ticket no. : '))
+    change = input("Update -- Name(n) - Class(c) - Flight date(d) - boarding(b) - Landing(l) : ")
+    if change == "n" :
+        new_name = input("Enter new name: ")
+        data = (new_name, psngr_id)
+        query = 'update psngr_list set name = %s where id=%s'
+    elif change == "c":
+        new_class = input("Enter new class: ")
+        data = (new_class,psngr_id)
+        query = 'replace class where id=%s as %s'
+    elif change == "d":
+        new_fdate = input("Enter new date")
+        data = (new_fdate, psngr_id)
+        query = 'replace flightDate where id=%s as %s'
+    elif change == "b":
+        new_boarding = input("Enter new boarding location: ")
+        data = (new_boarding, psngr_id)
+        query = 'replace name where id=%s as %s'
+    elif change == "l":
+        new_landing = input("Enter new landing location: ")
+        data = (new_landing, psngr_id)
+        query = 'replace name where id=%s as %s'
+    else:
+        print("Invalid Input")
+    
+    mycur.execute(query,data)
+    mydb.commit()
+
+def display():
+
+    def dis_psngr():
+        dis_id = int(input("Enter id of passenger: "))
+        query = "Select * from psngr_list where id = %s"
+        mycur.execute(query,dis_id)   
+        data = mycur.fetchall()
+        print("The passenger details are as follows : ")
+        for x in data:
+            data_label = Label(display_window,text=x)
+        data_label.grid(row=5,column=5)
+
+    def dispall():
+        query = "Select * from psngr_list"
+        mycur.execute(query)   
+        data = mycur.fetchall()
+        v = []
+        n = 4
+        for x in data:
+            v.append(x)
+        for i in v:
+            data_label = Label(display_window,text=i)
+            data_label.grid(row=n,column=1,columnspan=2)
+            n += 1
+
+    display_window = Toplevel()
+
+    display_window.title('Check details')
+    display_window.geometry('400x400')
+
+    chkAllBtn = Button(display_window,text='All Passengers details',command=dispall)
+    chkBtn = Button(display_window,text='Check Passenger details',command=dis_psngr)
+
+    chkAllBtn.grid(row=1,column=1)
+    chkBtn.grid(row=1,column=2)
+
+    display_window.mainloop()
 
 def main():
     window = Tk()
 
     window.title('Indian Airlines')
-    window.geometry('420x340')
+    window.geometry('430x340')
 
-    entryBtn = Button(window,text='Add Passenger Data',command=psngr_entry)
+    entryBtn = Button(window,text='Add Passenger Data',command=psngr_entry,width=20,height=2)
+    displayBtn = Button(window,text='Check deatils',command=display,width=20,height=2)
+    updateBtn = Button(window,text='Update Info',command=display,width=20,height=2)
+    About = Button(window,text='More Info',command=display,width=20,height=2)
 
-    entryBtn.grid(row=1,columnspan=1)
+    entryBtn.place(relx=0.10,rely=0.1)
+    displayBtn.place(relx=0.54,rely=0.1)
+    updateBtn.place(relx=0.10,rely=0.25)
+    About.place(relx=0.54,rely=0.25)
 
     window.mainloop()
 
