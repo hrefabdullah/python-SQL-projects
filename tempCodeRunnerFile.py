@@ -288,14 +288,7 @@ def display():
                     Label1.place(relx=0.12,rely=y)
                     y += 0.07
                     n += 1
-            spaceLabel = Label(display_window,text='--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------',width=90,pady=10,bg='#e1e3e1')
-            spaceLabel.place(relx=0.10,rely=0.72)
-            spaceLabel1 = Label(display_window,text='---------------------------------------------------------------------------------------------------------------',width=70,pady=10,bg='#e1e3e1')
-            spaceLabel1.place(relx=0.25,rely=0.99)
-            spaceLabel2 = Label(display_window,text='-----------------------------------------------------------------------------------',width=70,pady=10,bg='#e1e3e1')
-            spaceLabel2.place(relx=0.25,rely=1.037)
-            spaceLabel3 = Label(display_window,text='-----------------------------------------------------------------------------------',width=70,pady=10,bg='#e1e3e1')
-            spaceLabel3.place(relx=0.25,rely=1.23)
+            
 
         ask_id = Label(display_window,text='Enter ID of passenger : ',font=('ariel',12),bg='#e1e3e1')
         idEntry = Entry(display_window,width=23)
@@ -343,58 +336,6 @@ def display():
 
     display_window.mainloop()
 
-def deleteInfo():
-
-    def exitDeletion():
-        delete_window.destroy()
-
-    def checkID():
-        passId = dID_entry.get()
-        queryDisp = "Select * from psngr_list where id = %s"
-        mycur.execute(queryDisp,(passId,))
-        data1 = mycur.fetchall()
-        v = []
-        n = 0
-        y = 0.38
-        details_arr = ['ID : ','Name : ','Class : ','Date : ','Fly from : ','Fly to : ']
-        for x in data1:
-            v.append(x)
-            for i in v:
-                for j in i:
-                    Label1 = Label(delete_window,text=(('{} {}').format(details_arr[n],j)),font=('Ariel',14),width=30,bg='#e1e3e1')
-                    Label1.place(relx=0.1,rely=y)
-                    y += 0.06
-                    n += 1
-        
-
-    def ConfirmDelete():
-        passId = dID_entry.get()
-        query = 'Delete from psngr_list where id=%s'
-        mycur.execute(query,(passId,))
-        mydb.commit()
-        messagebox.showinfo('Removed','Deleted info successfully')
-
-    delete_window = Toplevel()
-    delete_window.title('Delete information')
-    delete_window.geometry('440x440')
-    delete_window.config(bg='#e1e3e1')
-
-    deleteTitle = Label(delete_window,text="Delete Infomation",font=('ariel',14,'bold'),bg='#e1e3e1')
-    dID = Label(delete_window,text='Enter the ID of Passenger : ',font=('ariel',10),bg='#e1e3e1')
-    dID_entry = Entry(delete_window)
-    checkId = Button(delete_window,text='check',command=checkID)
-    deleteExit = Button(delete_window, text='Exit',command=exitDeletion)
-    deletionBtn = Button(delete_window, text='Delete',command=ConfirmDelete)
-
-
-    deleteTitle.place(relx=0.33,rely=0.07)
-    dID.place(relx=0.08,rely=0.2)
-    dID_entry.place(relx=0.47,rely=0.2)
-    checkId.place(relx=0.78,rely=0.189)
-    deleteExit.place(relx=0.50,rely=0.80)
-    deletionBtn.place(relx=0.40,rely=0.8)
-
-
 def main():
     window = Tk()
 
@@ -402,7 +343,7 @@ def main():
         window.destroy()
 
     window.title('Indian Airlines')
-    window.geometry('480x400')
+    window.geometry('480x340')
     window.config(bg='#e1e3e1')
 
     titleLabel = Label(window,text='Airline Reservation Server',font=('Ariel',22,'bold'),bg='#e1e3e1')
@@ -412,15 +353,13 @@ def main():
     updateBtn = Button(window,text='Update Info',font=('Ariel',10),command=update_info,width=20,height=2)
     Exit = Button(window,text='Exit',font=('Ariel',10),command=exit_,width=20,height=2)
     copyrightLabel = Label(window,text='Copyright © 2024 Abdullah',bg='#e1e3e1',font=('ariel',9))
-    deleteBtn = Button(window, text="Delete Info",font=('Ariel',10),command=deleteInfo,width=20,height=2)
 
     titleLabel.place(relx=0.12,rely=0.1)
     tagLabel.place(relx=0.2,rely=0.21)
     entryBtn.place(relx=0.1,rely=0.4)
     displayBtn.place(relx=0.55,rely=0.4)
-    updateBtn.place(relx=0.1,rely=0.55)
-    deleteBtn.place(relx=0.55,rely=0.55)
-    Exit.place(relx=0.3, rely=0.7)
+    updateBtn.place(relx=0.1,rely=0.6)
+    Exit.place(relx=0.55,rely=0.6)
     copyrightLabel.place(relx=0.03,rely=0.9)
 
     window.mainloop()
