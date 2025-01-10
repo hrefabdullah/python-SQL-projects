@@ -2,7 +2,6 @@
 from tkinter import *
 from tkinter import messagebox
 import mysql.connector as sqlcon
-import random as rdm
 
 # Set up connection with mySQL local server
 mydb = sqlcon.connect(host='localhost',user='root', passwd='1725', database='air_reservation') #database must be written after executing code on line 11
